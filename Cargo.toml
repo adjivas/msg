@@ -2,6 +2,8 @@
 name = "shm"
 version = "0.1.0"
 authors = ["adjivas <adjivas@users.noreply.github.com>"]
+license = "gpl-3.0"
+repository = "https://github.com/adjivas/lem-ipc"
 
 [dependencies.libc]
 version = "*"

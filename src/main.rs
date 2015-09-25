@@ -108,13 +108,20 @@ macro_rules! msgget {
 
 macro_rules! msgsnd {
   ($id: expr, $at: expr, $text: expr) => ({
+    let mut p = $text.as_ptr();
+    let buf = &mut *Box::new(MsgBuf {
+      mtype: $at as i64,
+      mtext: *unsafe {
+        let aref = &*(p as *const [c_char; Ipc::MSG_BUFF as usize]);
+        p = p.offset(Ipc::MSG_BUFF as isize);
+        aref
+      },
+    });
+
     match unsafe {
       msgsnd(
         $id as c_int,
-        &mut *Box::new(MsgBuf {
-          mtype: $at as i64,
-          mtext: ['a' as c_char, '\n' as c_char],
-        }),
+        buf,
         Ipc::MSG_BUFF as size_t,
         Ipc::NOWAIT as c_int,
       )
@@ -134,7 +141,7 @@ macro_rules! msgrcv {
   ($id: expr, $from: expr) => ({
     let mut rcv = Box::new(MsgBuf {
       mtype: $from as c_long,
-      mtext: ['\0' as c_char, '\0' as c_char],
+      mtext: [0 as c_char; Ipc::MSG_BUFF as usize],
     });
 
     match unsafe {
@@ -152,6 +159,7 @@ macro_rules! msgrcv {
   });
 }
 
+#[allow(unused_assignments)]
 fn main() {
   let at:i32 = getpid!();
   let key:u64 = ftok!(b"/nfs/zfs-student-5/users/2013/adjivas").unwrap();
