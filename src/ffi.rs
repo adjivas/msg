@@ -5,18 +5,18 @@
 // This file may not be copied, modified, or distributed
 // except according to those terms.
 
+#![allow(non_camel_case_types)]
+
 extern crate libc;
 
-/// The `libc` use is the list of C types.
+/// The `libc` type is the list of C types.
 
-use libc:: {
-  ssize_t,
-  pid_t,
-  c_int,
-  c_long,
-  c_char,
-  size_t,
-};
+pub type pid_t = libc::types::os::arch::posix88::pid_t;
+pub type ssize_t = libc::types::os::arch::posix88::ssize_t;
+pub type c_int = libc::types::os::arch::c95::c_int;
+pub type c_long = libc::types::os::arch::c95::c_long;
+pub type c_char = libc::types::os::arch::c95::c_char;
+pub type size_t = libc::types::os::arch::c95::size_t;
 
 /// The `Ipc` enum is a POSIX Standard
 /// for System V.
@@ -27,6 +27,14 @@ pub enum Ipc {
   CREAT = 0o0001000, // POSIX
   NOWAIT = 2048, // POSIX
 }
+
+/// The `TOK_*, MSG_BUFF` const are default values
+/// for macros.
+
+#[allow(dead_code)]
+pub const TOK_PATHNAME: &'static [u8; 4] = b"/tmp";
+pub const TOK_PROJ_ID: u32 = 0;
+pub const MSG_BUFF: usize = 2;
 
 /// The `C` extern is list of libc functions required
 /// by the project.
@@ -47,5 +55,5 @@ extern "C" {
 #[repr(C)]
 pub struct MsgBuf {
   pub mtype: c_long,
-  pub mtext: [c_char; Ipc::MSG_BUFF as usize],
+  pub mtext: [c_char; MSG_BUFF as usize],
 }

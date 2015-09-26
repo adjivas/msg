@@ -19,7 +19,6 @@ Lemipc
 #### Directory-Tree:
 ```shell
 .
-|__ Cargo.lock
 |__ Cargo.toml
 |__ LICENSE
 |__ README.md

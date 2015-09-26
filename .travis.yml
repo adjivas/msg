@@ -2,12 +2,18 @@
 sudo: false
 language: rust
 rust:
+  - 1.3.0
+  - stable
   - nightly
   - beta
 
 os:
   - linux
   - osx
+
+branches:
+  only:
+    - master
 
 env:
   - ARCH=x86_64

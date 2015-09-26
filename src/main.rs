@@ -11,21 +11,78 @@ extern crate libc;
 mod macros;
 mod ffi;
 
-use libc::{
-  pid_t,
-  c_int,
-  c_long,
-  c_char,
-  size_t,
-};
+/// The `Msg` structure contains the access identifiant to
+/// the XSI interface.
+
+pub struct Msg {
+  id: i32,
+}
 
 #[allow(unused_assignments)]
-fn main() {
-  let at:i32 = getpid!();
-  let key:u64 = ftok!(b"/nfs/zfs-student-5/users/2013/adjivas").unwrap();
-  let id:i32 = msgget!(key).unwrap();
-  msgsnd!(id, at, b"a\n").unwrap();
-  let msg = msgrcv!(id).unwrap();
+impl Msg {
 
-  write!(&msg, 2);
+  /// The `new` constructor function returns a interface to
+  /// a XSI message queue.
+  pub fn new (
+    key: u64
+  ) -> Self {
+    Msg {
+      id: msgget!(key).unwrap()
+    }
+  }
+
+  /// The `send` function adds/pushs a message in the XSI queue
+  /// at a receiver.
+  pub fn send (
+    &self,
+    text: [u8; ffi::MSG_BUFF],
+    at: i32
+  ) -> Option<i32> {
+    msgsnd!(self.id, at, text)
+  }
+
+  /// The `receive` function gets/takes one message
+  /// from the XSI queue.
+  pub fn receive (&self) -> Option<[i8; ffi::MSG_BUFF]> {
+    msgrcv!(self.id)
+  }
+
+  /// The `receive` function gets/takes and prints one message
+  /// from the XSI queue.
+  pub fn display_receive (&self) -> Option<i32> {
+    match self.receive() {
+      Some(text) => write!(&text, ffi::MSG_BUFF),
+      None => None,
+    }
+  }
+}
+
+/// The `Lem` structure contains the init key to
+/// the msg struct.
+
+pub struct Lem {
+  key: u64,
+  msg: Msg,
+}
+
+impl Lem {
+
+  /// The `new` constructor function returns
+  // the principal structure.
+  pub fn new () -> Self {
+    let key: u64 = ftok!().unwrap();
+
+    Lem {
+      key: key,
+      msg: Msg::new(key),
+    }
+  }
+}
+
+fn main() {
+  let lem: Lem = Lem::new();
+  let at: i32 = getpid!();
+
+  lem.msg.send(*b"a\n", at).unwrap();
+  lem.msg.display_receive();
 }
