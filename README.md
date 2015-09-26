@@ -11,8 +11,6 @@ cargo build
 
 #### Cargo'git-Dependencies:
 ```shell
-#### Cargo'git-Dependencies:
-```shell
      Libc
       |
     Lemipc
