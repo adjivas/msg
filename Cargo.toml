@@ -1,7 +1,8 @@
 [package]
-name = "shm"
+name = "lemipc"
 version = "0.1.0"
 authors = ["adjivas <adjivas@users.noreply.github.com>"]
+description = "Video-game founded on System V IPC and written in Rust"
 license = "gpl-3.0"
 repository = "https://github.com/adjivas/lem-ipc"
 
