@@ -5,6 +5,9 @@
 // This file may not be copied, modified, or distributed
 // except according to those terms.
 
+pub const TOK_PROJ_ID: u32 = 0;
+pub const MSG_BUFF: usize = 2;
+
 /// The `getpid` macro returns the PID of
 /// program.
 
@@ -42,7 +45,7 @@ macro_rules! ftok {
     match unsafe {
       ffi::ftok(
         b"/tmp".as_ptr() as *mut i8,
-        ffi::Ipc::TOK_PROJ_ID as c_int,
+        macros::TOK_PROJ_ID as c_int,
       )
     } {
       -1 => None,
@@ -53,7 +56,7 @@ macro_rules! ftok {
     match unsafe {
       ffi::ftok(
         $pathname.as_ptr() as *mut i8,
-        ffi::Ipc::TOK_PROJ_ID as c_int
+        macros::TOK_PROJ_ID as c_int
       )
     } {
       -1 => None,
@@ -101,9 +104,9 @@ macro_rules! msgsnd {
     let buf = &mut *Box::new(ffi::MsgBuf {
       mtype: $at as i64,
       mtext: *unsafe {
-        let aref = &*(p as *const [c_char; ffi::Ipc::MSG_BUFF as usize]);
+        let aref = &*(p as *const [c_char; macros::MSG_BUFF as usize]);
 
-        p = p.offset(ffi::Ipc::MSG_BUFF as isize);
+        p = p.offset(macros::MSG_BUFF as isize);
         aref
       },
     });
@@ -112,7 +115,7 @@ macro_rules! msgsnd {
       ffi::msgsnd(
         $id as c_int,
         buf,
-        ffi::Ipc::MSG_BUFF as size_t,
+        macros::MSG_BUFF as size_t,
         ffi::Ipc::NOWAIT as c_int,
       )
     } {
@@ -135,14 +138,14 @@ macro_rules! msgrcv {
   ($id: expr, $from: expr) => ({
     let mut rcv = Box::new(ffi::MsgBuf {
       mtype: $from as c_long,
-      mtext: [0 as c_char; ffi::Ipc::MSG_BUFF as usize],
+      mtext: [0 as c_char; macros::MSG_BUFF as usize],
     });
 
     match unsafe {
       ffi::msgrcv(
         $id as c_int,
         &mut *rcv,
-        ffi::Ipc::MSG_BUFF as size_t,
+        macros::MSG_BUFF as size_t,
         $from as c_long,
         ffi::Ipc::NOWAIT as c_int
       )

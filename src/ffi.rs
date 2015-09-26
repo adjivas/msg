@@ -19,15 +19,13 @@ use libc:: {
 };
 
 /// The `Ipc` enum is a POSIX Standard
-/// for System V and
+/// for System V.
 
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub enum Ipc {
   CREAT = 0o0001000, // POSIX
   NOWAIT = 2048, // POSIX
-  TOK_PROJ_ID = 0,
-  MSG_BUFF = 2,
 }
 
 /// The `C` extern is list of libc functions required
