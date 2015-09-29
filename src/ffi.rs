@@ -34,7 +34,7 @@ pub enum Ipc {
 #[allow(dead_code)]
 pub const TOK_PATHNAME: &'static [u8; 4] = b"/tmp";
 pub const TOK_PROJ_ID: u32 = 0;
-pub const MSG_BUFF: usize = 2;
+pub const MSG_BUFF: usize = 1024;
 
 /// The `C` extern is list of libc functions required
 /// by the project.

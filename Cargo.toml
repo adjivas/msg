@@ -6,5 +6,8 @@ description = "Video-game founded on System V IPC and written in Rust"
 license = "gpl-3.0"
 repository = "https://github.com/adjivas/lem-ipc"
 
+[dependencies.readline]
+git = "https://github.com/adjivas/read-line.git"
+
 [dependencies.libc]
 version = "*"
