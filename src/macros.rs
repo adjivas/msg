@@ -1,6 +1,6 @@
 // @adjivas - github.com/adjivas. See the LICENSE
 // file at the top-level directory of this distribution and at
-// https://github.com/adjivas/lem-ipc
+// https://github.com/adjivas/xsi
 //
 // This file may not be copied, modified, or distributed
 // except according to those terms.
@@ -11,25 +11,7 @@
 #[macro_export]
 macro_rules! getpid {
   () => ({
-    unsafe { ffi::getpid() as i32 }
-  });
-}
-
-/// The `write` macro writes the message and
-/// returns None if fails or Some(0).
-
-#[macro_export]
-macro_rules! write {
-  ($text: expr, $len: expr) => ({
-    write!($text, $len, 1)
-  });
-  ($text: expr, $len: expr, $out: expr) => ({
-    match unsafe {
-      ffi::write($out, $text as *const ffi::c_char, $len as ffi::size_t)
-    } {
-      -1 => None,
-      xsi => Some(xsi as i32),
-    }
+    unsafe { xsi::ffi::getpid() }
   });
 }
 
@@ -40,9 +22,9 @@ macro_rules! write {
 macro_rules! ftok {
   () => ({
     match unsafe {
-      ffi::ftok(
-        ffi::TOK_PATHNAME.as_ptr() as *mut i8,
-        ffi::TOK_PROJ_ID as ffi::c_int,
+      xsi::ffi::ftok(
+        xsi::ffi::TOK_PATHNAME.as_ptr() as *mut i8,
+        xsi::ffi::TOK_PROJ_ID as xsi::ffi::c_int,
       )
     } {
       -1 => None,
@@ -51,9 +33,9 @@ macro_rules! ftok {
   });
   ($pathname: expr) => ({
     match unsafe {
-      ffi::ftok(
+      xsi::ffi::ftok(
         $pathname.as_ptr() as *mut i8,
-        ffi::TOK_PROJ_ID as ffi::c_int
+        xsi::ffi::TOK_PROJ_ID as xsi::ffi::c_int
       )
     } {
       -1 => None,
@@ -69,9 +51,9 @@ macro_rules! ftok {
 macro_rules! msgget {
   ($key: expr) => ({
     match unsafe {
-      ffi::msgget(
-        $key as ffi::c_int,
-        ffi::Ipc::CREAT as ffi::c_int | 0o0666,
+      xsi::ffi::msgget(
+        $key as xsi::ffi::c_int,
+        xsi::ffi::Ipc::CREAT as xsi::ffi::c_int | 0o0666,
       )
     } {
         -1 => None,
@@ -81,7 +63,7 @@ macro_rules! msgget {
   ($key: expr, $msgfl: expr) => ({
     match unsafe {
       msgget(
-        $key as ffi::c_int,
+        $key as xsi::ffi::c_int,
         $msgfl,
       )
     } {
@@ -101,7 +83,7 @@ macro_rules! msgsnd {
     let buf = &mut *Box::new(ffi::MsgBuf {
       mtype: $at as i64,
       mtext: *unsafe {
-        let aref = &*(p as *const [ffi::c_char; ffi::MSG_BUFF as usize]);
+        let aref = &*(p as *const [ffi::c_char; xsi::ffi::MSG_BUFF as usize]);
 
         p = p.offset(ffi::MSG_BUFF as isize);
         aref
@@ -109,11 +91,11 @@ macro_rules! msgsnd {
     });
 
     match unsafe {
-      ffi::msgsnd(
-        $id as ffi::c_int,
+      xsi::ffi::msgsnd(
+        $id as xsi::ffi::c_int,
         buf,
-        ffi::MSG_BUFF as ffi::size_t ,
-        ffi::Ipc::NOWAIT as ffi::c_int,
+        xsi::ffi::MSG_BUFF as xsi::ffi::size_t ,
+        xsi::ffi::Ipc::NOWAIT as xsi::ffi::c_int,
       )
     } {
       -1 => None,
@@ -128,23 +110,23 @@ macro_rules! msgsnd {
 #[macro_export]
 macro_rules! msgrcv {
   ($id: expr) => ({
-    let from: ffi::pid_t = getpid!();
+    let from: xsi::ffi::pid_t = getpid!();
 
     msgrcv!($id, from)
   });
   ($id: expr, $from: expr) => ({
     let mut rcv = Box::new(ffi::MsgBuf {
-      mtype: $from as ffi::c_long,
-      mtext: [0 as ffi::c_char; ffi::MSG_BUFF as usize],
+      mtype: $from as xsi::ffi::c_long,
+      mtext: [0 as xsi::ffi::c_char; xsi::ffi::MSG_BUFF as usize],
     });
 
     match unsafe {
-      ffi::msgrcv(
-        $id as ffi::c_int,
+      xsi::ffi::msgrcv(
+        $id as xsi::ffi::c_int,
         &mut *rcv,
-        ffi::MSG_BUFF as ffi::size_t ,
-        $from as ffi::c_long,
-        ffi::Ipc::NOWAIT as ffi::c_int
+        xsi::ffi::MSG_BUFF as xsi::ffi::size_t ,
+        $from as xsi::ffi::c_long,
+        xsi::ffi::Ipc::NOWAIT as xsi::ffi::c_int,
       )
     } {
       -1 => None,

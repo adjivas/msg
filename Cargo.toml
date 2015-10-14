@@ -1,13 +1,16 @@
 [package]
-name = "lemipc"
+name = "xsi"
 version = "0.1.0"
 authors = ["adjivas <adjivas@users.noreply.github.com>"]
-description = "Video-game founded on System V IPC and written in Rust"
+description = "XSI message queue"
 license = "gpl-3.0"
-repository = "https://github.com/adjivas/lem-ipc"
+repository = "https://github.com/adjivas/msg-xsi"
 
-[dependencies.readline]
-git = "https://github.com/adjivas/read-line.git"
+[dependencies.signal]
+git = "https://github.com/adjivas/signal.git"
+
+[dependencies.io]
+git = "https://github.com/adjivas/io.git"
 
 [dependencies.libc]
 version = "*"
