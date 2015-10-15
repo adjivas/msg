@@ -9,8 +9,14 @@
 #[macro_use] extern crate sig;
 #[macro_use] extern crate io;
 
-fn receive (sig: i32) {
-    println!("{} intercepted", sig);
+fn receive (_: i32) {
+    if let Some(key) = ftok!() {
+        if let Some(id) = msgget!(key) {
+            if let Some(line) = msgrcv!(id) {
+                write!(&line, xsi::ffi::MSG_BUFF);
+            }
+        }
+    }
 }
 
 fn main () {
@@ -18,12 +24,17 @@ fn main () {
 
     println!("{}", from);
     signal!(sig::ffi::Sig::USR1, receive);
-    loop {
-        if let Some(at) = read_number!() {
-            kill!(at, sig::ffi::Sig::USR1);
-        }
-        if let Some((len, line)) = read!() {
-            write!(&line, len);
+
+    if let Some(key) = ftok!() {
+        if let Some(id) = msgget!(key) {
+            loop {
+                if let Some(at) = read_number!() {
+                    if let Some((_, line)) = read!() {
+                        msgsnd!(id, at, &line);
+                        kill!(at, sig::ffi::Sig::USR1);
+                    }
+                }
+            }
         }
     }
 }

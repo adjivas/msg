@@ -3,10 +3,24 @@
 [![Build Status](https://travis-ci.org/adjivas/xsi.svg)](https://travis-ci.org/adjivas/xsi)
 [![GPLv3 License](http://img.shields.io/badge/license-GPLv3-blue.svg)](https://www.gnu.org/copyleft/gpl.html)
 
-#### How to install:
+#### How to build:
 ```shell
 git clone https://github.com/adjivas/xsi.git msgxsi && cd msgxsi
 cargo build
+```
+
+#### How to use:
+```shell
+cargo run
+1
+ping
+2 pong
+```
+```shell
+cargo run
+2
+1 ping
+pong
 ```
 
 #### Cargo'git-Dependencies:
