@@ -6,7 +6,7 @@
 // except according to those terms.
 
 #[macro_use] extern crate xsi;
-#[macro_use] extern crate signal;
+#[macro_use] extern crate sig;
 #[macro_use] extern crate io;
 
 fn receive (sig: i32) {
@@ -17,10 +17,10 @@ fn main () {
     let from: i32 = getpid!();
 
     println!("{}", from);
-    signal!(signal::ffi::Sig::USR1 as i32, receive);
+    signal!(sig::ffi::Sig::USR1, receive);
     loop {
-        if let Some(c) = read_number!() {
-            println!("{}", c);
+        if let Some(at) = read_number!() {
+            kill!(at, sig::ffi::Sig::USR1);
         }
         if let Some((len, line)) = read!() {
             write!(&line, len);

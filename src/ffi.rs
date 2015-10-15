@@ -42,7 +42,6 @@ pub const MSG_BUFF: usize = 1024;
 
 #[cfg(any(unix))]
 extern "C" {
-  pub fn getpid() -> pid_t;
   pub fn ftok(path: *mut c_char, id: c_int) -> c_long;
   pub fn msgget(key: c_int, msgflg: c_int) -> c_int;
   pub fn msgsnd(id: c_int, snd: *mut MsgBuf, len: size_t,

@@ -5,16 +5,6 @@
 // This file may not be copied, modified, or distributed
 // except according to those terms.
 
-/// The `getpid` macro returns the PID of
-/// program.
-
-#[macro_export]
-macro_rules! getpid {
-  () => ({
-    unsafe { xsi::ffi::getpid() }
-  });
-}
-
 /// The `ftok` macro returns the System-V'IPC
 /// key from pathname.
 
