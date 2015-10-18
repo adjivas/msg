@@ -1,11 +1,11 @@
 # Msg-XSI
 
-[![Build Status](https://travis-ci.org/adjivas/xsi.svg)](https://travis-ci.org/adjivas/xsi)
+[![Build Status](https://travis-ci.org/adjivas/msg.svg)](https://travis-ci.org/adjivas/msg)
 [![GPLv3 License](http://img.shields.io/badge/license-GPLv3-blue.svg)](https://www.gnu.org/copyleft/gpl.html)
 
 #### How to build:
 ```shell
-git clone https://github.com/adjivas/xsi.git msgxsi && cd msgxsi
+git clone https://github.com/adjivas/msg.git msgxsi && cd msgxsi
 cargo build
 ```
 
@@ -25,9 +25,9 @@ pong
 
 #### Cargo'git-Dependencies:
 ```shell
-   Libc IO Signal
-      \ | /
-       XSI
+     Sig IO
+       \ /
+       Msg
 ```
 
 #### Directory-Tree:
@@ -44,4 +44,4 @@ pong
 ```
 
 #### License:
-*xsi*'s code in this repo uses the [GNU GPL v3](http://www.gnu.org/licenses/gpl-3.0.html) [license](https://github.com/adjivas/xsi/blob/master/LICENSE).
+*msg*'s code in this repo uses the [GNU GPL v3](http://www.gnu.org/licenses/gpl-3.0.html) [license](https://github.com/adjivas/msg/blob/master/LICENSE).

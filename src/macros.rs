@@ -1,6 +1,6 @@
 // @adjivas - github.com/adjivas. See the LICENSE
 // file at the top-level directory of this distribution and at
-// https://github.com/adjivas/xsi
+// https://github.com/adjivas/msg
 //
 // This file may not be copied, modified, or distributed
 // except according to those terms.
@@ -12,9 +12,9 @@
 macro_rules! ftok {
   () => ({
     match unsafe {
-      xsi::ffi::ftok (
-        xsi::ffi::TOK_PATHNAME.as_ptr() as *mut i8,
-        xsi::ffi::TOK_PROJ_ID as xsi::ffi::c_int,
+      msg::ffi::ftok (
+        msg::ffi::TOK_PATHNAME.as_ptr() as *mut i8,
+        msg::ffi::TOK_PROJ_ID as i32,
       )
     } {
         -1 => None,
@@ -23,9 +23,9 @@ macro_rules! ftok {
   });
   ($pathname: expr) => ({
     match unsafe {
-        xsi::ffi::ftok (
+        msg::ffi::ftok (
             $pathname.as_ptr() as *mut i8,
-            xsi::ffi::TOK_PROJ_ID as xsi::ffi::c_int
+            msg::ffi::TOK_PROJ_ID as i32
         )
     } {
         -1 => None,
@@ -41,9 +41,9 @@ macro_rules! ftok {
 macro_rules! msgget {
     ($key: expr) => ({
         match unsafe {
-          xsi::ffi::msgget (
-            $key as xsi::ffi::c_int,
-            xsi::ffi::Ipc::CREAT as xsi::ffi::c_int | 0o0666,
+          msg::ffi::msgget (
+            $key as i32,
+            msg::ffi::Ipc::CREAT as i32 | 0o0666,
           )
         } {
             -1 => None,
@@ -53,7 +53,7 @@ macro_rules! msgget {
     ($key: expr, $msgfl: expr) => ({
         match unsafe {
           msgget(
-            $key as xsi::ffi::c_int,
+            $key as i32,
             $msgfl,
           )
         } {
@@ -70,22 +70,22 @@ macro_rules! msgget {
 macro_rules! msgsnd {
     ($id: expr, $at: expr, $text: expr) => ({
         let mut p = $text.as_ptr();
-        let mut buf = xsi::ffi::MsgBuf {
+        let mut buf = msg::ffi::MsgBuf {
             mtype: $at as i64,
             mtext: *unsafe {
-                let aref = &*(p as *const [xsi::ffi::c_char; xsi::ffi::MSG_BUFF as usize]);
+                let aref = &*(p as *const [i8; msg::ffi::MSG_BUFF as usize]);
 
-                p = p.offset(xsi::ffi::MSG_BUFF as isize);
+                p = p.offset(msg::ffi::MSG_BUFF as isize);
                 aref
             },
         };
 
         match unsafe {
-            xsi::ffi::msgsnd (
-                $id as xsi::ffi::c_int,
+            msg::ffi::msgsnd (
+                $id as i32,
                 &mut buf,
-                xsi::ffi::MSG_BUFF as xsi::ffi::size_t ,
-                xsi::ffi::Ipc::NOWAIT as xsi::ffi::c_int,
+                msg::ffi::MSG_BUFF as u64,
+                msg::ffi::Ipc::NOWAIT as i32,
             )
         } {
             -1 => None,
@@ -99,24 +99,19 @@ macro_rules! msgsnd {
 
 #[macro_export]
 macro_rules! msgrcv {
-    ($id: expr) => ({
-        let from: xsi::ffi::pid_t = getpid!();
-
-        msgrcv!($id, from)
-    });
     ($id: expr, $from: expr) => ({
-        let mut rcv = xsi::ffi::MsgBuf {
-            mtype: $from as xsi::ffi::c_long,
-            mtext: [0 as xsi::ffi::c_char; xsi::ffi::MSG_BUFF as usize],
+        let mut rcv = msg::ffi::MsgBuf {
+            mtype: $from as i64,
+            mtext: [0 as i8; msg::ffi::MSG_BUFF as usize],
         };
 
         match unsafe {
-            xsi::ffi::msgrcv (
-                $id as xsi::ffi::c_int,
+            msg::ffi::msgrcv (
+                $id as i32,
                 &mut rcv,
-                xsi::ffi::MSG_BUFF as xsi::ffi::size_t ,
-                $from as xsi::ffi::c_long,
-                xsi::ffi::Ipc::NOWAIT as xsi::ffi::c_int,
+                msg::ffi::MSG_BUFF as u64 ,
+                $from as i64,
+                msg::ffi::Ipc::NOWAIT as i32,
             )
         } {
             -1 => None,

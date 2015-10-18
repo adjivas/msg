@@ -1,23 +1,11 @@
 // @adjivas - github.com/adjivas. See the LICENSE
 // file at the top-level directory of this distribution and at
-// https://github.com/adjivas/xsi
+// https://github.com/adjivas/msg
 //
 // This file may not be copied, modified, or distributed
 // except according to those terms.
 
 #![allow(dead_code)]
-#![allow(non_camel_case_types)]
-
-extern crate libc;
-
-/// The `libc` type is the list of C types.
-
-pub type pid_t = libc::types::os::arch::posix88::pid_t;
-pub type ssize_t = libc::types::os::arch::posix88::ssize_t;
-pub type c_int = libc::types::os::arch::c95::c_int;
-pub type c_long = libc::types::os::arch::c95::c_long;
-pub type c_char = libc::types::os::arch::c95::c_char;
-pub type size_t = libc::types::os::arch::c95::size_t;
 
 /// The `Ipc` enum is a POSIX Standard
 /// for System V.
@@ -42,12 +30,12 @@ pub const MSG_BUFF: usize = 1024;
 
 #[cfg(any(unix))]
 extern "C" {
-  pub fn ftok(path: *mut c_char, id: c_int) -> c_long;
-  pub fn msgget(key: c_int, msgflg: c_int) -> c_int;
-  pub fn msgsnd(id: c_int, snd: *mut MsgBuf, len: size_t,
-                flag: c_int) -> c_int;
-  pub fn msgrcv(id: c_int, snd: *mut MsgBuf, len: size_t, mtype: c_long,
-                flag: c_int) -> ssize_t;
+  pub fn ftok(path: *mut i8, id: i32) -> i64;
+  pub fn msgget(key: i32, msgflg: i32) -> i32;
+  pub fn msgsnd(id: i32, snd: *mut MsgBuf, len: u64,
+                flag: i32) -> i32;
+  pub fn msgrcv(id: i32, snd: *mut MsgBuf, len: u64, mtype: i64,
+                flag: i32) -> i64;
 }
 
 /// The MsgBuf struct is a structure required
@@ -55,6 +43,6 @@ extern "C" {
 
 #[repr(C)]
 pub struct MsgBuf {
-  pub mtype: c_long,
-  pub mtext: [c_char; MSG_BUFF as usize],
+  pub mtype: i64,
+  pub mtext: [i8; MSG_BUFF as usize],
 }
