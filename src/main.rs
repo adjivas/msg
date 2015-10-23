@@ -9,6 +9,7 @@
 #[macro_use] extern crate sig;
 #[macro_use] extern crate io;
 
+#[allow(unused_unsafe)]
 fn receive (_: i32) {
     if let Some(key) = ftok!() {
         if let Some(id) = msgget!(key) {

@@ -119,3 +119,25 @@ macro_rules! msgrcv {
         }
     });
 }
+
+/// The `msgclr` macro returns a information
+/// according the argument command.
+
+#[macro_export]
+macro_rules! msgctl {
+    ($id: expr, $cmd: expr) => ({
+        msgctl!($id, $cmd, std::ptr::null_mut())
+    });
+    ($id: expr, $cmd: expr, $info: expr) => ({
+        match unsafe {
+            msg::ffi::msgctl (
+                $id,
+                $cmd as i32,
+                $info
+            )
+        } {
+            -1 => false,
+            _ => true,
+        }
+    });
+}
