@@ -10,28 +10,30 @@
 
 #[macro_export]
 macro_rules! ftok {
-  () => ({
-    match unsafe {
-      msg::ffi::ftok (
-        msg::ffi::TOK_PATHNAME.as_ptr() as *mut i8,
-        msg::ffi::TOK_PROJ_ID as i32,
-      )
-    } {
-        -1 => None,
-        key => Some(key as u64),
-    }
-  });
-  ($pathname: expr) => ({
-    match unsafe {
-        msg::ffi::ftok (
-            $pathname.as_ptr() as *mut i8,
-            msg::ffi::TOK_PROJ_ID as i32
-        )
-    } {
-        -1 => None,
-        key => Some(key as u64),
-    }
-  });
+    () => ({
+        extern crate std;
+        match unsafe {
+          msg::ffi::ftok (
+            msg::ffi::TOK_PATHNAME.as_ptr() as *mut i8,
+            msg::ffi::TOK_PROJ_ID as i32,
+          )
+        } {
+            -1 => None,
+            key => Some(key as u64),
+        }
+    });
+    ($pathname: expr) => ({
+        extern crate std;
+        match unsafe {
+            msg::ffi::ftok (
+                $pathname.as_ptr() as *mut i8,
+                msg::ffi::TOK_PROJ_ID as i32
+            )
+        } {
+            -1 => None,
+            key => Some(key as u64),
+        }
+    });
 }
 
 /// The `msgget` macro returns identifiant of
@@ -40,6 +42,7 @@ macro_rules! ftok {
 #[macro_export]
 macro_rules! msgget {
     ($key: expr) => ({
+        extern crate std;
         match unsafe {
           msg::ffi::msgget (
             $key as i32,
@@ -51,6 +54,7 @@ macro_rules! msgget {
         }
     });
     ($key: expr, $msgfl: expr) => ({
+        extern crate std;
         match unsafe {
           msgget(
             $key as i32,
@@ -69,6 +73,7 @@ macro_rules! msgget {
 #[macro_export]
 macro_rules! msgsnd {
     ($id: expr, $at: expr, $text: expr) => ({
+        extern crate std;
         let mut p = $text.as_ptr();
         let mut buf = msg::ffi::MsgBuf {
             mtype: $at as i64,
