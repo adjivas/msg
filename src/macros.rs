@@ -11,7 +11,7 @@
 #[macro_export]
 macro_rules! ftok {
     () => ({
-        extern crate std;
+        extern crate msg;
         match unsafe {
           msg::ffi::ftok (
             msg::ffi::TOK_PATHNAME.as_ptr() as *mut i8,
@@ -23,7 +23,7 @@ macro_rules! ftok {
         }
     });
     ($pathname: expr) => ({
-        extern crate std;
+        extern crate msg;
         match unsafe {
             msg::ffi::ftok (
                 $pathname.as_ptr() as *mut i8,
@@ -42,21 +42,16 @@ macro_rules! ftok {
 #[macro_export]
 macro_rules! msgget {
     ($key: expr) => ({
-        extern crate std;
-        match unsafe {
-          msg::ffi::msgget (
-            $key as i32,
-            msg::ffi::Ipc::CREAT as i32 | 0o0666,
-          )
-        } {
-            -1 => None,
-            id => Some(id as i32),
-        }
+        extern crate msg;
+        msgget! (
+            $key,
+            msg::ffi::Ipc::CREAT as i32 | 0o0666
+        )
     });
     ($key: expr, $msgfl: expr) => ({
-        extern crate std;
+        extern crate msg;
         match unsafe {
-          msgget(
+          msg::ffi::msgget (
             $key as i32,
             $msgfl,
           )
@@ -73,7 +68,7 @@ macro_rules! msgget {
 #[macro_export]
 macro_rules! msgsnd {
     ($id: expr, $at: expr, $text: expr) => ({
-        extern crate std;
+        extern crate msg;
         let mut p = $text.as_ptr();
         let mut buf = msg::ffi::MsgBuf {
             mtype: $at as i64,
@@ -105,6 +100,7 @@ macro_rules! msgsnd {
 #[macro_export]
 macro_rules! msgrcv {
     ($id: expr, $from: expr) => ({
+        extern crate msg;
         let mut rcv = msg::ffi::MsgBuf {
             mtype: $from as i64,
             mtext: [0 as i8; msg::ffi::MSG_BUFF as usize],
@@ -131,9 +127,11 @@ macro_rules! msgrcv {
 #[macro_export]
 macro_rules! msgctl {
     ($id: expr, $cmd: expr) => ({
+        extern crate std;
         msgctl!($id, $cmd, std::ptr::null_mut())
     });
     ($id: expr, $cmd: expr, $info: expr) => ({
+        extern crate msg;
         match unsafe {
             msg::ffi::msgctl (
                 $id,
