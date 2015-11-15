@@ -1,0 +1,10 @@
+[package]
+name = "msg"
+version = "0.1.0"
+authors = ["adjivas <adjivas@users.noreply.github.com>"]
+description = "XSI message queue"
+license = "gpl-3.0"
+repository = "https://github.com/adjivas/msg"
+
+[dependencies.io]
+git = "https://github.com/adjivas/io.git"
