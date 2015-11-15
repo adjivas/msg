@@ -6,8 +6,5 @@ description = "XSI message queue"
 license = "gpl-3.0"
 repository = "https://github.com/adjivas/msg"
 
-[dependencies.sig]
-git = "https://github.com/adjivas/sig.git"
-
 [dependencies.io]
 git = "https://github.com/adjivas/io.git"

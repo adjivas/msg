@@ -9,20 +9,6 @@ git clone https://github.com/adjivas/msg.git msgxsi && cd msgxsi
 cargo build
 ```
 
-#### How to use:
-```shell
-cargo run
-1
-ping
-2 pong
-```
-```shell
-cargo run
-2
-1 ping
-pong
-```
-
 #### Cargo'git-Dependencies:
 ```shell
      Sig IO
@@ -36,6 +22,11 @@ pong
 |__ Cargo.toml
 |__ LICENSE
 |__ README.md
+|__ tests
+|   \__ lib.rs
+|__ examples
+|   |__ msg.rs
+|   \__ clr.rs
 \__ src
     |__ ffi.rs
     |__ lib.rs
