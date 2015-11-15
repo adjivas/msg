@@ -1,6 +1,6 @@
 # Msg-XSI
 
-[![travis-badge][]][travis] [![travis-badge][]][travis] [![docs-badge][]][docs] [![license-badge][]][license]
+[![docs-badge][]][docs] [![license-badge][]][license] [![travis-badge][]][travis] [![circle-badge][]][circle]
 
 #### How to build:
 ```shell
