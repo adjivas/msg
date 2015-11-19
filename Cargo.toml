@@ -1,6 +1,6 @@
 [package]
 name = "msg"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["adjivas <adjivas@users.noreply.github.com>"]
 description = "XSI message queue"
 documentation = "http://adjivas.github.io/msg/msg"
@@ -10,4 +10,4 @@ keywords = ["XSI", "message", "msg"]
 license = "GPL-3.0"
 
 [dependencies]
-io-synesthesist = ">= 0.1.0"
+io-synesthesist = "> 0.1.0"
