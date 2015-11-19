@@ -6,7 +6,7 @@
 // except according to those terms.
 
 #[macro_use] extern crate msg;
-#[macro_use] extern crate io;
+#[macro_use] extern crate io_synesthesist;
 
 #[allow(unused_assignments)]
 fn main () {
