@@ -3,8 +3,11 @@ name = "msg"
 version = "0.1.0"
 authors = ["adjivas <adjivas@users.noreply.github.com>"]
 description = "XSI message queue"
-license = "gpl-3.0"
-repository = "https://github.com/adjivas/msg"
+documentation = "http://adjivas.github.io/msg/msg"
+repository = "https://github.com/adjivas/msg.git"
+readme = "README.md"
+keywords = ["XSI", "message", "msg"]
+license = "GPL-3.0"
 
 [dependencies.io]
 git = "https://github.com/adjivas/io.git"
