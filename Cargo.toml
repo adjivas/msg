@@ -9,5 +9,5 @@ readme = "README.md"
 keywords = ["XSI", "message", "msg"]
 license = "GPL-3.0"
 
-[dependencies.io]
-git = "https://github.com/adjivas/io.git"
+[dependencies]
+io-synesthesist = ">= 0.1.0"
